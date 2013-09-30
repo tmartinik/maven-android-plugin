@@ -37,7 +37,6 @@ import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import com.jayway.maven.plugins.android.AbstractAndroidMojo;
 import com.jayway.maven.plugins.android.CommandExecutor;
 import com.jayway.maven.plugins.android.ExecutionException;
-import com.jayway.maven.plugins.android.common.NativeHelper;
 import com.jayway.maven.plugins.android.config.PullParameter;
 
 
@@ -196,41 +195,6 @@ public class ApklibMojo extends AbstractAndroidMojo
             {
                 getLog().info( nativeLibrariesDirectory + " exists, adding libraries." );
                 addDirectory( jarArchiver, nativeLibrariesDirectory, NATIVE_LIBRARIES_FOLDER );
-            }
-            else
-            {
-                getLog().info( nativeLibrariesDirectory 
-                        + " does not exist, looking for libraries in target directory." );
-                // Add native libraries built and attached in this build
-                String[] ndkArchitectures = NativeHelper.getNdkArchitectures( ndkArchitecture,
-                                                                              applicationMakefile,
-                                                                              project.getBasedir() );
-                for ( String ndkArchitecture : ndkArchitectures )
-                {
-                    final File ndkLibsDirectory = new File( ndkOutputDirectory, ndkArchitecture );
-                    addSharedLibraries( jarArchiver, ndkLibsDirectory, ndkArchitecture );
-                
-                    // Add native library dependencies
-                    // FIXME: Remove as causes duplicate libraries when building final APK if this set includes
-                    //        libraries from dependencies of the APKLIB
-                    //final File dependentLibs = new File( ndkOutputDirectory.getAbsolutePath(), ndkArchitecture );
-                    //addSharedLibraries( jarArchiver, dependentLibs, prefix );
-
-                    // get native libs from other apklibs
-                    for ( Artifact apkLibraryArtifact : getAllRelevantDependencyArtifacts() )
-                    {
-                        if ( apkLibraryArtifact.getType().equals( APKLIB ) )
-                        {
-                            final File apklibLibsDirectory = new File( getLibraryUnpackDirectory( apkLibraryArtifact )
-                                                                       + "/" + NATIVE_LIBRARIES_FOLDER + "/"
-                                                                       + ndkArchitecture );
-                            if ( apklibLibsDirectory.exists() )
-                            {
-                                addSharedLibraries( jarArchiver, apklibLibsDirectory, ndkArchitecture );
-                            }
-                        }
-                    }
-                }
             }
         }
         catch ( ArchiverException e )
