@@ -8,7 +8,7 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>android-maven-plugin</artifactId>
+        <artifactId>android-maven-plugin-clv</artifactId>
         <configuration>
           <sdk>
             <platform>16</platform>

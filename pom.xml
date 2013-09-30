@@ -18,7 +18,7 @@
 		<version>1.0.0</version>
 	</parent>
 	<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-	<artifactId>android-maven-plugin-tmartinik</artifactId>
+	<artifactId>android-maven-plugin-clv</artifactId>
 	<version>3.7.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 	<name>Android Maven Plugin - android-maven-plugin</name>
